@@ -8,20 +8,31 @@ defmodule SketchyChat.Chat.Server do
 
   # Client API
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(name) when is_binary(name) do
+    GenServer.start_link(__MODULE__, name, name: via_tuple(name))
+  end
+
+  defp via_tuple(name) do
+    {:via, Registry, {SketchyChat.Chat.Registry, name}}
   end
 
   # Server Callbacks
 
   @impl true
-  def init(_) do
-    {:ok, []}
+  def init(name) do
+    {:ok, Impl.new(name)}
   end
 
   @impl true
   def handle_call({:append, sender, content}, _from, state) do
     new_state = Impl.append(state, sender, content)
+
+    Phoenix.PubSub.broadcast(
+      SketchyChat.PubSub,
+      "chat:#{state.name}:updates",
+      {:new_message, sender, content}
+    )
+
     {:reply, :ok, new_state}
   end
 

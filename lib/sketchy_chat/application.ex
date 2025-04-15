@@ -11,6 +11,7 @@ defmodule SketchyChat.Application do
       SketchyChatWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:sketchy_chat, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: SketchyChat.PubSub},
+      {Registry, keys: :unique, name: SketchyChat.Chat.Registry},
       # Start a worker by calling: SketchyChat.Worker.start_link(arg)
       # {SketchyChat.Worker, arg},
       # Start to serve requests, typically the last entry
