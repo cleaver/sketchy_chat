@@ -8,7 +8,8 @@
 import Config
 
 config :sketchy_chat,
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  short_code_length: 6
 
 # Configures the endpoint
 config :sketchy_chat, SketchyChatWeb.Endpoint,
