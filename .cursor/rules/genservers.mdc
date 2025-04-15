@@ -1,0 +1,57 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+When creating a GenServer-based application in Elixir, follow these steps to decouple the interface and implementation:
+
+1. Create three separate modules within a domain-specific directory:
+   - Implementation module (e.g., `MyApp.Domain.MyServer.Impl`)
+   - Server module (e.g., `MyApp.Domain.MyServer.Server`)
+   - API module (e.g., `MyApp.Domain.MyServer`)
+
+2. Organize your project structure as follows:
+   ```
+   lib/
+   └── my_app/
+       └── domain/
+           └── my_server/
+               ├── impl.ex
+               └── server.ex
+           └── my_server.ex
+   ```
+
+3. In the implementation module (`impl.ex`):
+   - Write the core application logic
+   - Avoid any GenServer-specific code
+   - Focus on pure business logic
+
+4. In the server module (`server.ex`):
+   - Implement the GenServer behavior
+   - Handle GenServer callbacks (init, handle_call, handle_cast, etc.)
+   - Delegate actual work to the implementation module
+
+5. In the API module (`my_server.ex`):
+   - Define the public interface for your server
+   - Create functions that interact with the server module
+
+6. In the implementation module, write functions that represent your core logic without any GenServer-specific code.
+
+7. In the server module:
+   - Use `use GenServer`
+   - Implement `init/1`, `handle_call/3`, `handle_cast/2`, and other necessary callbacks
+   - Call functions from the implementation module to perform the actual work
+
+8. In the API module:
+   - Define public functions that users of your server will call
+   - These functions should typically use `GenServer.call/3` or `GenServer.cast/2` to communicate with the server
+
+9. When writing tests:
+   - Test the implementation module directly for core logic
+   - Test the API module for integration and public interface
+
+10. Start your GenServer in your application's supervision tree using the server module.
+
+11. If your domain requires multiple GenServers, repeat this process for each server, creating separate directories under the `domain` folder.
+
+Remember, this approach aims to improve code organization, testability, and maintainability by separating concerns and clearly defining the public API within each domain and server context.
