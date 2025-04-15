@@ -18,6 +18,7 @@ defmodule SketchyChatWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/chat/:name", ChatLive
   end
 
   # Other scopes may use custom stacks.
