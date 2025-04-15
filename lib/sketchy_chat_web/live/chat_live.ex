@@ -5,7 +5,16 @@ defmodule SketchyChatWeb.ChatLive do
   def mount(%{"name" => chat_name}, _session, socket) do
     messages = SketchyChat.Chat.list(chat_name)
 
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(SketchyChat.PubSub, "chat:#{chat_name}:updates")
+    end
+
     {:ok, assign(socket, chat_name: chat_name, messages: messages)}
+  end
+
+  @impl true
+  def handle_info({:new_message, sender, content}, socket) do
+    {:noreply, update(socket, :messages, &(&1 ++ [{sender, content}]))}
   end
 
   @impl true
