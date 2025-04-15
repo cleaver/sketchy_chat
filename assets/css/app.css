@@ -1,6 +1,8 @@
 /* See the Tailwind configuration guide for advanced usage
    https://tailwindcss.com/docs/configuration */
 
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
 @import "tailwindcss" source(none);
 @source "../css";
 @source "../js";
@@ -100,3 +102,16 @@
 [data-phx-root-id] { display: contents }
 
 /* This file is for your main application CSS */
+
+/* Apply comic book font to the entire site */
+html, body {
+  font-family: 'Comic Neue', cursive;
+  font-size: 1.1em;
+  letter-spacing: 0.5px;
+}
+
+/* Make headings bolder and slightly larger */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  text-transform: uppercase;
+}
