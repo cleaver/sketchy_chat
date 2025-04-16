@@ -12,6 +12,15 @@ SketchyChat is a real-time chat application built with Phoenix LiveView. It allo
 - Built with Phoenix LiveView for real-time updates
 - Scalable architecture using GenServer and Registry
 
+## Why is it Sketchy?
+
+SketchyChat lives up to its name for a few reasons:
+
+- **Somewhat Anonymous**: The application doesn't log messages or store them in a database. All messages are lost once the server is shut down.
+- **In-Memory Only**: Everything is stored in memory using GenServer and Registry, which means all messages and chat rooms disappear when the server restarts.
+- **Not Production-Ready**: While the application uses Phoenix LiveView and PubSub for real-time communication, it wasn't designed with scalability in mind. It's more of a proof-of-concept than a production-ready chat application.
+- **No Persistence**: There's no message history, no user authentication, and no way to recover lost messages - making it perfect for those who want to keep their conversations truly temporary.
+
 ## Getting Started
 
 To start your Phoenix server:
