@@ -12,8 +12,26 @@ defmodule SketchyChatWeb.ChatLiveTest do
   end
 
   describe "ChatLive" do
+    test "requires user name", %{conn: conn, chat_name: chat_name} do
+      {:ok, view, _html} = live(conn, ~p"/chat/#{chat_name}")
+
+      assert render(view) =~ "Please identify yourself"
+    end
+
+    test "shows messages after user identifies", %{conn: conn, chat_name: chat_name} do
+      {:ok, view, _html} = live(conn, ~p"/chat/#{chat_name}")
+
+      assert view
+             |> form("#user-identification-form", %{"user_name" => "user4"})
+             |> render_submit() =~ "Welcome, user4"
+    end
+
     test "mounts with chat name and initial messages", %{conn: conn, chat_name: chat_name} do
-      {:ok, _view, html} = live(conn, ~p"/chat/#{chat_name}")
+      {:ok, view, _html} = live(conn, ~p"/chat/#{chat_name}")
+
+      render_hook(view, "identify", %{"user_name" => "user4"})
+
+      html = render(view)
 
       assert html =~ "Chat: #{chat_name}"
       assert html =~ "user1"
@@ -25,11 +43,15 @@ defmodule SketchyChatWeb.ChatLiveTest do
     test "receives and displays new messages", %{conn: conn, chat_name: chat_name} do
       {:ok, view, _html} = live(conn, ~p"/chat/#{chat_name}")
 
+      render_hook(view, "identify", %{"user_name" => "user4"})
+
       # Simulate receiving a new message through PubSub
       send(view.pid, {:new_message, "user3", "New message!"})
 
-      assert render(view) =~ "user3"
-      assert render(view) =~ "New message!"
+      html = render(view)
+
+      assert html =~ "user3"
+      assert html =~ "New message!"
     end
   end
 end
