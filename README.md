@@ -20,6 +20,7 @@ SketchyChat lives up to its name for a few reasons:
 - **In-Memory Only**: Everything is stored in memory using GenServer and Registry, which means all messages and chat rooms disappear when the server restarts.
 - **Not Production-Ready**: While the application uses Phoenix LiveView and PubSub for real-time communication, it wasn't designed with scalability in mind. It's more of a proof-of-concept than a production-ready chat application.
 - **No Persistence**: There's no message history, no user authentication, and no way to recover lost messages - making it perfect for sketchy individuals who want to keep their conversations temporary.
+- **Insecure**: This is in no way secure. You're unauthenticated and nothing stops you from spoofing another users name.
 
 ## Getting Started
 
