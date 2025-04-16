@@ -19,7 +19,7 @@ SketchyChat lives up to its name for a few reasons:
 - **Somewhat Anonymous**: The application doesn't log messages or store them in a database. All messages are lost once the server is shut down.
 - **In-Memory Only**: Everything is stored in memory using GenServer and Registry, which means all messages and chat rooms disappear when the server restarts.
 - **Not Production-Ready**: While the application uses Phoenix LiveView and PubSub for real-time communication, it wasn't designed with scalability in mind. It's more of a proof-of-concept than a production-ready chat application.
-- **No Persistence**: There's no message history, no user authentication, and no way to recover lost messages - making it perfect for those who want to keep their conversations truly temporary.
+- **No Persistence**: There's no message history, no user authentication, and no way to recover lost messages - making it perfect for sketchy individuals who want to keep their conversations temporary.
 
 ## Getting Started
 
@@ -31,6 +31,10 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
+## Architecture
+
+- [GenServer Pattern and Process Registry](docs/genserver_pattern.md) - Learn about the application's architecture and how it uses GenServers and Registry for process management.
 
 ## Learn more
 
