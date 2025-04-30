@@ -16,7 +16,8 @@ defmodule SketchyChatWeb.ChatLive do
        chat_name: chat_name,
        messages: messages,
        user_name: nil,
-       user_identification_form: to_form(%{"user_name" => ""})
+       user_identification_form: to_form(%{"user_name" => ""}),
+       message_form: to_form(%{"content" => ""})
      )}
   end
 
@@ -28,6 +29,12 @@ defmodule SketchyChatWeb.ChatLive do
   @impl true
   def handle_event("identify", %{"user_name" => user_name}, socket) do
     {:noreply, assign(socket, user_name: user_name)}
+  end
+
+  @impl true
+  def handle_event("send_message", %{"content" => content}, socket) do
+    Chat.append(socket.assigns.chat_name, socket.assigns.user_name, content)
+    {:noreply, assign(socket, message_form: to_form(%{"content" => ""}))}
   end
 
   @impl true
@@ -50,6 +57,28 @@ defmodule SketchyChatWeb.ChatLive do
               <p class="text-gray-600">{content}</p>
             </div>
           <% end %>
+
+          <.form
+            for={@message_form}
+            id="message-form"
+            phx-submit="send_message"
+            class="mt-4 space-y-4"
+          >
+            <div class="flex gap-2">
+              <.input
+                field={@message_form[:content]}
+                type="text"
+                placeholder="Type your message..."
+                class="flex-1"
+              />
+              <button
+                type="submit"
+                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Send
+              </button>
+            </div>
+          </.form>
         </div>
       <% else %>
         <div class="bg-base-200 p-6 rounded-lg shadow">
