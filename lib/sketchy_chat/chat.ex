@@ -31,7 +31,7 @@ defmodule SketchyChat.Chat do
   """
   @spec append(String.t(), String.t(), String.t()) :: :ok
   def append(chat_name, sender, content) do
-    GenServer.call(via_tuple(chat_name), {:append, sender, content})
+    GenServer.cast(via_tuple(chat_name), {:append, sender, content})
   end
 
   @doc """

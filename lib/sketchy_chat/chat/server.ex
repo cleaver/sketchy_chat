@@ -24,7 +24,7 @@ defmodule SketchyChat.Chat.Server do
   end
 
   @impl true
-  def handle_call({:append, sender, content}, _from, state) do
+  def handle_cast({:append, sender, content}, state) do
     new_state = Impl.append(state, sender, content)
 
     Phoenix.PubSub.broadcast(
@@ -33,7 +33,7 @@ defmodule SketchyChat.Chat.Server do
       {:new_message, sender, content}
     )
 
-    {:reply, :ok, new_state}
+    {:noreply, new_state}
   end
 
   @impl true
