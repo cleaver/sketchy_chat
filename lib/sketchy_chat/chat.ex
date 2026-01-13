@@ -39,6 +39,10 @@ defmodule SketchyChat.Chat do
   """
   @spec list(String.t()) :: [{String.t(), String.t()}]
   def list(chat_name) do
+    if Registry.lookup(SketchyChat.Chat.Registry, chat_name) == [] do
+      new(chat_name)
+    end
+
     GenServer.call(via_tuple(chat_name), :list)
   end
 
